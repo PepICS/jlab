@@ -1,7 +1,6 @@
-# Usa la imagen base de JupyterLab (o cualquier imagen oficial de Jupyter)
 FROM jupyter/datascience-notebook:latest
 
-# Instalar FreeTDS y controladores ODBC (necesario para conectar a sybase (centricity) des de python)
+# Instalem FreeTDS i controladors ODBC per poder conectar-nos a les sybase de ccc
 USER root
 RUN apt-get update && apt-get install -y \
     freetds-bin \
@@ -10,35 +9,35 @@ RUN apt-get update && apt-get install -y \
     unixodbc-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Crear o configurar /etc/odbcinst.ini para registrar FreeTDS
+# Creem/configurem /etc/odbcinst.ini per registrar FreeTDS
 RUN printf '[FreeTDS]\nDescription=FreeTDS ODBC driver for Sybase and SQL Server\nDriver=/usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so\nUsageCount=1\n' > /etc/odbcinst.ini
 
-# Copiar el paquete db_connections al contenedor
+# Copiem el package db_connections al contenidor
 COPY ./db_connections /home/jovyan/db_connections
 
-# Temporalmente usar root para poder cambiar los permisos
+# Temporalment fem servir root per poder canviar permisos
 USER root
 
-# Asegurarse de que el usuario jovyan tenga permisos en el directorio del paquete
+# Asegurem que l'usuari jovyan tingui permisos en el directori del package
 RUN chown -R jovyan:users /home/jovyan/db_connections
 
-# Cambiar permisos del directorio de trabajo (por seguridad)
+# Canviem permisos del directori de treball (per seguretat)
 RUN chmod -R 775 /home/jovyan/db_connections
 
-# Cambiar de nuevo a jovyan para las siguientes instrucciones
+# Canviem de nou a jovyan per les instruccions següents
 USER jovyan
 
-# Instalar las herramientas necesarias para construir el paquete
+# Instalem les eines necesaries per construir el package
 RUN pip install build
 
-# Construir el paquete usando pyproject.toml
+# Construim el pacakge mitjançant pyproject.toml
 RUN python -m build /home/jovyan/db_connections
 
-# Instalar el paquete desde el archivo .whl generado
+# Instalem el package des de l'arxiu .whl generat
 RUN pip install /home/jovyan/db_connections/dist/*.whl
 
-# Establecer el directorio de trabajo dentro del contenedor
+# Establim el directori de treball dins el contenidor
 WORKDIR /home/jovyan
 
-# Comando para iniciar JupyterLab
+# Iniciem JupyterLab
 CMD ["start.sh", "jupyter", "lab"]
