@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  jupyterlab:
+    build:
+      context: .                      
+      dockerfile: Dockerfile           
+    container_name: jlab
+    volumes:
+      - ./notebooks:/home/jovyan/work
+      - ./db_connections:/home/jovyan/db_connections           
+    ports:
+      - "9000:8888"                             
+    env_file:                                   
+      - .env.pep                                
+    command: start.sh jupyter lab               
+    restart: always                             

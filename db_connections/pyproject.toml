@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "db_connections"
+version = "0.1.0"
+description = "db connections from jlab for sectec"
+authors = [
+    { name="pep", email="jgomez.alvarez.hj23.ics@gencat.cat" }
+]
+license = { text="MIT" }
+dependencies = [
+    "pandas",
+    "oracledb",
+    "pyodbc",
+    "SQLAlchemy"
+]
