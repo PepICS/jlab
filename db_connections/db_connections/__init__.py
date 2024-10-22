@@ -1,2 +1,2 @@
-from .ecap import *
-from .centricity import *
+from .oracle import *
+from .sybase import *
