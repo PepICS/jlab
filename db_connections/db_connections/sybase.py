@@ -1,7 +1,7 @@
 import os
-import warnings
-import pyodbc
 import pandas as pd
+import pyodbc
+import warnings
 
 warnings.filterwarnings('ignore', category=UserWarning)
 
