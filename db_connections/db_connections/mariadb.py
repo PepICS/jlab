@@ -11,7 +11,7 @@ def mariadb2pd(db, q):
 
             conexion = mysql.connector.connect(
                 host=os.environ.get('PA_HOST'),
-                user=os.environ.get('PA_USERNAME'),
+                user=os.environ.get('PA_USER'),
                 password=os.environ.get('PA_PASSWORD'),
                 database=os.environ.get('PA_DB')
             )
@@ -28,7 +28,7 @@ def mariadb2pd(db, q):
 
             conexion = mysql.connector.connect(
                 host=os.environ.get('LLU_HOST'),
-                user=os.environ.get('LLU_USERNAME'),
+                user=os.environ.get('LLU_USER'),
                 password=os.environ.get('LLU_PASSWORD'),
                 database=os.environ.get('LLU_DB')
             )
